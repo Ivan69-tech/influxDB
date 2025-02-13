@@ -3,6 +3,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import time
 from datetime import datetime
 import json
+import os
 
 def conversion_time(last_successful_time):
     if isinstance(last_successful_time, datetime):
@@ -12,12 +13,12 @@ def conversion_time(last_successful_time):
 
 REMOTE_BUCKET = "distant-v2"
 REMOTE_ORG = "test"
-REMOTE_TOKEN = "u_xcvpUNOFeyh-Z675EP1WpfvvSWa31pj8m8PbOrCougwGEPh5FvsXp0dHs7DDvJsrNwTZYjiMdSmXOvOPmc_A=="
+REMOTE_TOKEN = os.getenv("REMOTE_TOKEN")
 REMOTE_URL = "http://influxdb.ivan-app.fr"
 
 LOCAL_BUCKET = "modbus"
 LOCAL_ORG = "organisation"
-LOCAL_TOKEN = "tokentest"
+LOCAL_TOKEN = os.getenv("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
 LOCAL_URL = "http://localhost:8086"
 
 client_remote = influxdb_client.InfluxDBClient(url=REMOTE_URL, token=REMOTE_TOKEN, org=REMOTE_ORG)
