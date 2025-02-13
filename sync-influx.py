@@ -12,7 +12,7 @@ def conversion_time(last_successful_time):
 
 REMOTE_BUCKET = "distant-v2"
 REMOTE_ORG = "test"
-REMOTE_TOKEN = "zepvknejzovnzjenvornz"
+REMOTE_TOKEN = "u_xcvpUNOFeyh-Z675EP1WpfvvSWa31pj8m8PbOrCougwGEPh5FvsXp0dHs7DDvJsrNwTZYjiMdSmXOvOPmc_A=="
 REMOTE_URL = "http://influxdb.ivan-app.fr"
 
 LOCAL_BUCKET = "modbus"
@@ -23,9 +23,9 @@ LOCAL_URL = "http://localhost:8086"
 client_remote = influxdb_client.InfluxDBClient(url=REMOTE_URL, token=REMOTE_TOKEN, org=REMOTE_ORG)
 client_local = influxdb_client.InfluxDBClient(url=LOCAL_URL, token=LOCAL_TOKEN, org=LOCAL_ORG)
 
+
 write_api = client_remote.write_api(write_options=SYNCHRONOUS)
 query_api = client_local.query_api()
-
 
 
 
@@ -47,6 +47,7 @@ while True:
 
         result = query_api.query(org=LOCAL_ORG, query=query)
 
+        print("ok")
         points = []  # Liste pour stocker tous les points
         data_sent = False
 
