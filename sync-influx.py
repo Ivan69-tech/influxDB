@@ -4,6 +4,9 @@ import time
 from datetime import datetime
 import json
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 def conversion_time(last_successful_time):
     if isinstance(last_successful_time, datetime):
@@ -57,7 +60,6 @@ while True:
                 field = record.get_field()
                 value = int(record.get_value())  
                 timestamp = record.get_time()
-
                 p = influxdb_client.Point("Modbus").field(field, value).time(timestamp)
                 points.append(p)  # ✅ Stocker dans la liste au lieu d'envoyer immédiatement
         
