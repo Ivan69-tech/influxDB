@@ -52,21 +52,24 @@ while True:
         result = query_api.query(org=LOCAL_ORG, query=query)
 
         print("ok")
-        points = []  # Liste pour stocker tous les points
+        points = []  
         data_sent = False
 
+        #stockage dans la variable points pour ensuite envoyer tout d'un coup.
         for table in result:
             for record in table.records:
                 field = record.get_field()
                 value = int(record.get_value())  
                 timestamp = record.get_time()
                 p = influxdb_client.Point("Modbus").field(field, value).time(timestamp)
-                points.append(p)  # ✅ Stocker dans la liste au lieu d'envoyer immédiatement
+                points.append(p)  
         
-        write_api.write(bucket=REMOTE_BUCKET, org=REMOTE_ORG, record=points)  # ✅ Envoi en batch
+        #envoyer les données sur le serveur distant d'un coup
+        write_api.write(bucket=REMOTE_BUCKET, org=REMOTE_ORG, record=points)  
         print(f"{len(points)} points envoyés en une seule requête.")
         data_sent = True
-                
+        
+        #mettre à jour la dernière date d'envoie des données au serveur
         if data_sent :
             dataToWrite = {"lastSuccessFullTime": timestamp.strftime("%Y-%m-%d %H:%M:%S")}
             with open('./data/lastSuccessFullTime.json', 'w') as f:
@@ -74,6 +77,7 @@ while True:
         else :
             print("Aucune nouvelle donnée à envoyer.")
 
+    #perte de com
     except influxdb_client.rest.ApiException as e:
         print(f"Erreur InfluxDB distante : {e}")
         print("Attente avant une nouvelle tentative...")
