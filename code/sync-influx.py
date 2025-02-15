@@ -5,7 +5,13 @@ from datetime import datetime
 import json
 import os
 from dotenv import load_dotenv
+import sys
+
+#load le .env
 load_dotenv()
+
+#pour avoir la visu des logs dans docker
+sys.stdout.reconfigure(line_buffering=True)
 
 
 def conversion_time(last_successful_time):
@@ -14,15 +20,15 @@ def conversion_time(last_successful_time):
     return last_successful_time  
 
 
-REMOTE_BUCKET = "distant-v2"
-REMOTE_ORG = "test"
+REMOTE_BUCKET = os.getenv("REMOTE_BUCKET")
+REMOTE_ORG = os.getenv("REMOTE_ORG")
 REMOTE_TOKEN = os.getenv("REMOTE_TOKEN")
-REMOTE_URL = "http://influxdb.ivan-app.fr"
+REMOTE_URL = os.getenv("REMOTE_URL")
 
-LOCAL_BUCKET = "modbus"
-LOCAL_ORG = "organisation"
+LOCAL_BUCKET = os.getenv("LOCAL_BUCKET")
+LOCAL_ORG = os.getenv("LOCAL_ORG")
 LOCAL_TOKEN = os.getenv("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
-LOCAL_URL = "http://localhost:8086"
+LOCAL_URL = os.getenv("LOCAL_URL")
 
 client_remote = influxdb_client.InfluxDBClient(url=REMOTE_URL, token=REMOTE_TOKEN, org=REMOTE_ORG)
 client_local = influxdb_client.InfluxDBClient(url=LOCAL_URL, token=LOCAL_TOKEN, org=LOCAL_ORG)
@@ -51,7 +57,7 @@ while True:
 
         result = query_api.query(org=LOCAL_ORG, query=query)
 
-        print("ok")
+        print("pull de la database locale ok")
         points = []  
         data_sent = False
 
@@ -85,4 +91,4 @@ while True:
     except Exception as e:
         print(f"Erreur inconnue : {e}")
 
-    time.sleep(30)
+    time.sleep(15)
