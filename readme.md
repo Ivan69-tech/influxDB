@@ -30,3 +30,5 @@ succès de synchronisation est sauvegardée dans un volume docker. Dès que la c
 requetées à la base locale depuis cette date sauvegardée puis les envoie au serveur.
 
 Les images sont dispo ici : https://hub.docker.com/u/ivandecharbo
+
+(projet non fini)
