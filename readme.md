@@ -1,7 +1,8 @@
 Le but de ce répo est de déployer une base de données locale, alimentée par un serveur modbus, et de la synchroniser
-avec une base de données hébergée sur un serveur. Il faut créer un ficher .env a la racine du docker compose qui donnera
-les identifiants et infos de la base locale et ceux de la base remote. Toutes les variables d'environnement sont
-définies dans le .env-example (utilisez et renommez ce fichier).
+avec une base de données hébergée sur un serveur. Influx est utilisé ici, mais le principe pourrait s'appliquer avec
+d'autres db. Il faut créer un ficher .env a la racine du docker compose qui donnera les identifiants et infos de la base
+locale et ceux de la base remote. Toutes les variables d'environnement sont définies dans le .env-example (utilisez et
+renommez ce fichier).
 
 Le docker compose implémente un conteneur telegraf afin de récuperer les données d'un serveur modbus. Le repo contient
 un fichier de configuration dans lequel on configure les registres que l'on souhaite poller. La configuration de
@@ -28,6 +29,8 @@ uint16) et le registre 100 (input, uint16) dispo.
 Un programme python s'occupe de synchroniser les deux databases. Dès que la connexion est perdue, la date du dernier
 succès de synchronisation est sauvegardée dans un volume docker. Dès que la connexion est revenue, les données sont
 requetées à la base locale depuis cette date sauvegardée puis les envoie au serveur.
+
+Une image grafana est également dispo et discute avec la database locale ou remote (au choix)
 
 Les images sont dispo ici : https://hub.docker.com/u/ivandecharbo
 
