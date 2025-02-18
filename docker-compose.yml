@@ -39,7 +39,7 @@ services:
     networks:
       - link
   sync_influxdb:
-    image: sync-influxdb:latest
+    image: ivandecharbo/sync-influxdb:latest
     container_name: sync_influxdb
     env_file:
       - .env
@@ -51,7 +51,7 @@ services:
     networks:
       - link  
   modbus-server:
-    image: modbus-server:latest
+    image: ivandecharbo/modbus-server:latest
     container_name: modbus-server
     env_file:
       - .env
