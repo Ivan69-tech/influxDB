@@ -39,7 +39,7 @@ services:
     networks:
       - link
   sync_influxdb:
-    image: ivandecharbo/sync-influxdb:latest
+    image: sync_influxdb:latest
     container_name: sync_influxdb
     env_file:
       - .env

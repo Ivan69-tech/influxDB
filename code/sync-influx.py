@@ -1,7 +1,7 @@
 import influxdb_client
 from influxdb_client.client.write_api import SYNCHRONOUS
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import os
 from dotenv import load_dotenv
@@ -59,6 +59,7 @@ while True:
 
         print("pull de la database locale ok")
         points = []  
+        time_list = []
         data_sent = False
 
         #stockage dans la variable points pour ensuite envoyer tout d'un coup.
@@ -67,6 +68,10 @@ while True:
                 field = record.get_field()
                 value = int(record.get_value())  
                 timestamp = record.get_time()
+                time_list.append(timestamp)
+
+                print(timestamp.strftime("%Y-%m-%d %H:%M:%S"))
+                
                 p = influxdb_client.Point("Modbus").field(field, value).time(timestamp)
                 points.append(p)  
         
@@ -77,7 +82,9 @@ while True:
         
         #mettre à jour la dernière date d'envoie des données au serveur
         if data_sent :
+            timestamp = max(time_list)
             dataToWrite = {"lastSuccessFullTime": timestamp.strftime("%Y-%m-%d %H:%M:%S")}
+            print("time = ", dataToWrite)
             with open('./data/lastSuccessFullTime.json', 'w') as f:
                 json.dump(dataToWrite, f, default=str)
         else :
